@@ -6,8 +6,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://rm-bp1k5k30a28g6a3ggso.mysql.rds.aliyuncs.com:3306/training?useUnicode=true&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
-    username: root
-    password: c1231230
+    username: lurran
+    password: Cc1231230
   redis:
     host: lurran-redis-address.redis.rds.aliyuncs.com
     port: 6379

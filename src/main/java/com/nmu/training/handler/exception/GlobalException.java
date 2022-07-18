@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 @ControllerAdvice
 public class GlobalException {
+    @ExceptionHandler(MyRuntimeException.class)
+    @ResponseBody
+    public Result myRuntimeException(MyRuntimeException e){
+        log.error("自定义异常抛出:{}",e.getMessage());
+        return Result.error().codeAndMessage(e.getCode(),e.getMessage());
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
@@ -25,11 +31,5 @@ public class GlobalException {
         return Result.error().codeAndMessage(ResultInfo.GlOBAL_ERROR);
     }
 
-    @ExceptionHandler(MyRuntimeException.class)
-    @ResponseBody
-    public Result myRuntimeException(MyRuntimeException e){
-        log.error("自定义异常抛出:{}",e.getMessage());
-        return Result.error().codeAndMessage(e.getCode(),e.getMessage());
-    }
 
 }
