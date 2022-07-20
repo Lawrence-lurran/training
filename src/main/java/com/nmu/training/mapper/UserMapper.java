@@ -2,7 +2,7 @@ package com.nmu.training.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.nmu.training.entity.User;
+import com.nmu.training.domain.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

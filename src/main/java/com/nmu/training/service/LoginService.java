@@ -2,7 +2,9 @@ package com.nmu.training.service;
 
 
 import com.nmu.training.common.ResponseResult;
-import com.nmu.training.entity.User;
+import com.nmu.training.domain.model.LoginBody;
+
+import java.util.Map;
 
 /**
  * Description:
@@ -12,8 +14,10 @@ import com.nmu.training.entity.User;
  */
 
 public interface LoginService {
-    ResponseResult login(User user);
+    ResponseResult<Map<String ,String >> login(LoginBody user);
 
 
-    ResponseResult logout();
+    ResponseResult<Boolean> logout();
+
+    ResponseResult<Map<String, String>> register(LoginBody user);
 }

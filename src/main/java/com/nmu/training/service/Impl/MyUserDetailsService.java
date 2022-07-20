@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 
 import com.nmu.training.auth.MyUserDetails;
-import com.nmu.training.entity.User;
+import com.nmu.training.domain.entity.User;
 import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.mapper.MenuMapper;
 import com.nmu.training.mapper.UserMapper;
@@ -39,12 +39,9 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (StringUtils.isBlank(username)) {
-            throw new MyRuntimeException("用户名不能为空！");
-        }
         log.info("输入的用户名为:{}",username);
         MyUserDetails myUserDetails = new MyUserDetails();
-        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserName,username));
+        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername,username));
         if (Objects.isNull(user)) {
             throw new MyRuntimeException("用户名不存在!");
         }

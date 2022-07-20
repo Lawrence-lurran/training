@@ -3,13 +3,13 @@ package com.nmu.training.controller;
 
 
 import com.nmu.training.common.ResponseResult;
-import com.nmu.training.entity.User;
+import com.nmu.training.domain.entity.User;
+import com.nmu.training.domain.model.LoginBody;
 import com.nmu.training.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * Description:
@@ -23,13 +23,17 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("/user/login")
-    public ResponseResult login(@RequestBody User user){
-
+    public ResponseResult<Map<String ,String >> login(@RequestBody LoginBody user){
         return loginService.login(user);
     }
-    @RequestMapping("/user/logout")
-    public ResponseResult logout(){
+    @GetMapping ("/user/logout")
+    public ResponseResult<Boolean> logout(){
         return loginService.logout();
+    }
+
+    @PostMapping("/user/register")
+    public ResponseResult<Map<String ,String >> register(@RequestBody LoginBody user){
+        return loginService.register(user);
     }
 
 }

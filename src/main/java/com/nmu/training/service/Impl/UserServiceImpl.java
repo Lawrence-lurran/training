@@ -2,7 +2,7 @@ package com.nmu.training.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import com.nmu.training.entity.User;
+import com.nmu.training.domain.entity.User;
 import com.nmu.training.mapper.UserMapper;
 import com.nmu.training.service.UserService;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author makejava
  * @since 2022-04-08 14:54:30
  */
-@Service("sysUserService")
+@Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
 }

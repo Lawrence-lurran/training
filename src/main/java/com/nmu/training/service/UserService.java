@@ -1,7 +1,7 @@
 package com.nmu.training.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.nmu.training.entity.User;
+import com.nmu.training.domain.entity.User;
 
 
 /**

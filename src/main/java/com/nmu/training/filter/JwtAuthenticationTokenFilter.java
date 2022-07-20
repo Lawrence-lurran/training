@@ -2,6 +2,7 @@ package com.nmu.training.filter;
 
 
 import com.nmu.training.auth.MyUserDetails;
+import com.nmu.training.constant.Constants;
 import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.util.JwtUtil;
 import com.nmu.training.util.RedisCache;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Description:
@@ -49,11 +51,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             e.printStackTrace();
             throw new MyRuntimeException("token非法");
         }
-        String redisKey="login:"+userId;
+        String redisKey= Constants.LOGIN_USER_KEY+userId;
         MyUserDetails loginUser =  redisCache.getCacheObject(redisKey);
         if (Objects.isNull(loginUser)){
-            throw new MyRuntimeException("用户未登陆");
+            throw new MyRuntimeException("用户未登陆,或token已经过期");
         }
+        redisCache.expire(redisKey,Constants.TOKEN_EXPIRATION, TimeUnit.MINUTES);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(loginUser,null,loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request,response);

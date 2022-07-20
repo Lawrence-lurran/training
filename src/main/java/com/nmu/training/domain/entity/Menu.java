@@ -1,4 +1,4 @@
-package com.nmu.training.entity;
+package com.nmu.training.domain.entity;
 
 /**
  * Description:

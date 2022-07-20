@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import com.nmu.training.entity.User;
+import com.nmu.training.domain.entity.User;
 import com.nmu.training.service.UserService;
 import org.springframework.web.bind.annotation.*;
 

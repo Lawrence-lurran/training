@@ -1,4 +1,4 @@
-package com.nmu.training.entity;
+package com.nmu.training.domain.entity;
 
 import java.util.Date;
 
@@ -8,6 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * 用户表(User)表实体类
  *
@@ -24,10 +28,13 @@ public class User {
     private Long id;
 
     //用户名
-    private String userName;
+
+    private String username;
     //昵称
-    private String nickName;
+    private String nickname;
     //密码
+    @NotNull(message = "密码为空")
+    @NotBlank(message = "密码为空")
     private String password;
     //账号状态（0正常 1停用）
     private String status;

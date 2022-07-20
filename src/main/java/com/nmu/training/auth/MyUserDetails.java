@@ -2,7 +2,7 @@ package com.nmu.training.auth;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import com.nmu.training.entity.User;
+import com.nmu.training.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,7 +53,7 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUserName();
+        return user.getUsername();
     }
 
     @Override

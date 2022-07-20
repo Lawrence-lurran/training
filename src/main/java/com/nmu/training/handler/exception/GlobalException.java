@@ -1,9 +1,10 @@
 package com.nmu.training.handler.exception;
 
 
-import com.nmu.training.common.Result;
+import com.nmu.training.common.ResponseResult;
 import com.nmu.training.common.ResultInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,16 +20,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GlobalException {
     @ExceptionHandler(MyRuntimeException.class)
     @ResponseBody
-    public Result myRuntimeException(MyRuntimeException e){
+    public ResponseResult<Boolean> myRuntimeException(MyRuntimeException e){
         log.error("自定义异常抛出:{}",e.getMessage());
-        return Result.error().codeAndMessage(e.getCode(),e.getMessage());
+        return ResponseResult.error(e.getCode(),e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public Result exception(Exception e){
+    public ResponseResult<Boolean> exception(Exception e){
         log.error("全局异常处理:{}",e.getMessage());
-        return Result.error().codeAndMessage(ResultInfo.GlOBAL_ERROR);
+        return ResponseResult.error(ResultInfo.GlOBAL_ERROR);
+    }
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    @ResponseBody
+    public ResponseResult<Boolean> internalAuthenticationServiceException(InternalAuthenticationServiceException e){
+        log.error("认证异常:{}",e.getMessage());
+        return ResponseResult.error(e.getMessage());
     }
 
 
