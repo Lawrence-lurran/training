@@ -5,10 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 
 import com.nmu.training.auth.MyUserDetails;
+import com.nmu.training.domain.entity.RoleDO;
 import com.nmu.training.domain.entity.User;
+import com.nmu.training.domain.entity.UserRoleDO;
 import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.mapper.MenuMapper;
+import com.nmu.training.mapper.RoleMapper;
 import com.nmu.training.mapper.UserMapper;
+import com.nmu.training.mapper.UserRoleMapper;
+import com.nmu.training.service.IRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -36,6 +42,10 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private MenuMapper menuMapper;
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -47,7 +57,13 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         myUserDetails.setUser(user);
         List<String> list = menuMapper.selectPermsByUserId(user.getId());
+        List<UserRoleDO> userRoleDOS = userRoleMapper.selectList(new LambdaQueryWrapper<UserRoleDO>().eq(UserRoleDO::getUserId, user.getId()));
+        List<String> roles = userRoleDOS.stream().map(userRoleDO -> {
+            RoleDO roleDO = roleMapper.selectById(userRoleDO.getRoleId());
+            return roleDO.getRoleKey();
+        }).collect(Collectors.toList());
         myUserDetails.setPermissions(list);
+        myUserDetails.setRoles(roles);
         return myUserDetails;
     }
 

@@ -7,9 +7,11 @@ import com.nmu.training.common.ResponseResult;
 import com.nmu.training.common.ResultInfo;
 import com.nmu.training.constant.Constants;
 import com.nmu.training.domain.entity.User;
+import com.nmu.training.domain.entity.UserRoleDO;
 import com.nmu.training.domain.model.LoginBody;
 import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.mapper.MenuMapper;
+import com.nmu.training.service.IUserRoleService;
 import com.nmu.training.service.LoginService;
 import com.nmu.training.service.UserService;
 import com.nmu.training.util.JwtUtil;
@@ -46,6 +48,8 @@ public class LoginServiceImpl implements LoginService {
     private PasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserService userService;
+    @Autowired
+    private IUserRoleService userRoleService;
     @Autowired
     private MenuMapper menuMapper;
     @Override
@@ -92,6 +96,10 @@ public class LoginServiceImpl implements LoginService {
         MyUserDetails myUserDetails = new MyUserDetails();
         User loginUser = userService.getOne(new LambdaQueryWrapper<User>().eq(User::getUsername, user.getUsername()));
         String userId = loginUser.getId().toString();
+        UserRoleDO userRoleDO = new UserRoleDO();
+        userRoleDO.setUserId(loginUser.getId());
+        userRoleDO.setRoleId(2L);
+        userRoleService.save(userRoleDO);
         String jwt = JwtUtil.createJWT(userId);
         myUserDetails.setUser(loginUser);
         List<String> list = menuMapper.selectPermsByUserId(loginUser.getId());

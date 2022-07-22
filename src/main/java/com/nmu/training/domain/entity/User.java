@@ -3,6 +3,8 @@ package com.nmu.training.domain.entity;
 import java.util.Date;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,7 @@ import javax.validation.constraints.NotNull;
 @TableName("sys_user")
 public class User {
     //主键@TableId
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     //用户名

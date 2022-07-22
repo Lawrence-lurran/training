@@ -30,6 +30,10 @@ public class MyUserDetails implements UserDetails {
     private User user;
 
     private List<String> permissions;
+
+    private List<String> roles;
+
+
     @JSONField(serialize = false)
     private List<GrantedAuthority> authorities;
 

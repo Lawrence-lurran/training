@@ -11,6 +11,7 @@ package com.nmu.training.config;
 
 
 
+import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import io.swagger.annotations.ApiOperation;
@@ -52,7 +53,9 @@ public class SwaggerConfig {
                 //none：不扫描
                 //withClassAnnotation：扫描类上的注解，参数是一个注解的反射对象
                 //withMethodAnnotation：扫描方法上的注解
-                .apis(RequestHandlerSelectors.any())
+                //.apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 //paths:过滤什么路径
                 //.paths(PathSelectors.ant("/com/sise/pass/**"))
                 .build();
@@ -79,9 +82,9 @@ public class SwaggerConfig {
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 // 设置标题
-                .title("标题：若依管理系统_接口文档")
+                .title("标题：北方民族大学食品安全抽样系统_接口文档")
                 // 描述
-                .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
+                .description("描述：用于北方民族大学食品安全抽样系统,具体包括验证码,登录模块")
                 // 作者信息
                 .contact(new Contact("lurran", null, null))
                 // 版本

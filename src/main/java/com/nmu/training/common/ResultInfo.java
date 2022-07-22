@@ -24,7 +24,10 @@ public enum ResultInfo {
     CAPTCHA_EXP_ERROR("401003","验证码过期"),
     CAPTCHA_WRONG_ERROR("401004","验证码错误"),
     CAPTCHA_ERROR("401005","获取验证码失败"),
+    TOKEN_ILLEGAL_ERROR("401007","token非法"),
+    TOKEN_EXP_ERROR("401008","用户未登录，token已经过期"),
     AccessDenied_ERROR("403","权限不足"),
+    SAVE_SAMPLING_INFORMATION_ERROR("402001","保存SamplingInformation错误"),
     MY_ERROR("102","自定义异常");
     ;
 

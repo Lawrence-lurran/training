@@ -9,6 +9,8 @@ import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.util.Base64;
 import com.nmu.training.util.IdUtils;
 import com.nmu.training.util.RedisCache;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author ruoyi
  */
+@Api(value = "验证码", tags="{验证码接口}")
 @RestController
 public class CaptchaController
 {
@@ -43,6 +46,7 @@ public class CaptchaController
     /**
      * 生成验证码
      */
+    @ApiOperation(value = "获取验证码")
     @GetMapping("/captchaImage")
     public ResponseResult<Map<String ,String >> getCode(){
 
