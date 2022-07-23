@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 
 import com.nmu.training.common.ResponseResult;
 import com.nmu.training.common.ResultInfo;
+import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.util.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,7 +28,14 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         //ResponseResult result=new ResponseResult(HttpStatus.FORBIDDEN+"", "权限不足",null);
-        ResponseResult<Boolean> error = ResponseResult.error(ResultInfo.AccessDenied_ERROR);
+        Throwable cause = accessDeniedException.getCause();
+        ResponseResult<Boolean> error;
+        if (cause instanceof MyRuntimeException ){
+            MyRuntimeException myRuntimeException = (MyRuntimeException) cause;
+            error=ResponseResult.error(myRuntimeException.getCode(),myRuntimeException.getMessage());
+        }else {
+            error=ResponseResult.error(ResultInfo.AccessDenied_ERROR);
+        }
         String s = JSON.toJSONString(error);
         WebUtils.renderString(response,s);
     }

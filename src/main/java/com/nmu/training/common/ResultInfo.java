@@ -29,7 +29,7 @@ public enum ResultInfo {
     AccessDenied_ERROR("403","权限不足"),
     SAVE_SAMPLING_INFORMATION_ERROR("402001","保存SamplingInformation错误"),
     MY_ERROR("102","自定义异常");
-    ;
+
 
     /**
      * 状态码

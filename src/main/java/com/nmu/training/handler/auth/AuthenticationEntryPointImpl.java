@@ -4,6 +4,7 @@ package com.nmu.training.handler.auth;
 import com.alibaba.fastjson.JSON;
 import com.nmu.training.common.ResponseResult;
 import com.nmu.training.common.ResultInfo;
+import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.util.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -26,7 +27,14 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         //ResponseResult result=new ResponseResult(HttpStatus.UNAUTHORIZED+"","用户认证失败请重新登陆",null);
-        ResponseResult<Boolean> error = ResponseResult.error(ResultInfo.Authentication_ERROR);
+        Throwable cause = authException.getCause();
+        ResponseResult<Boolean> error;
+        if (cause instanceof MyRuntimeException){
+            MyRuntimeException myRuntimeException = (MyRuntimeException) cause;
+            error=ResponseResult.error(myRuntimeException.getCode(),myRuntimeException.getMessage());
+        }else {
+            error=ResponseResult.error(ResultInfo.Authentication_ERROR);
+        }
         String s = JSON.toJSONString(error);
         WebUtils.renderString(response,s);
     }

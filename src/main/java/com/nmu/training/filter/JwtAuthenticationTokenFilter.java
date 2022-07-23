@@ -39,7 +39,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getHeader("token");
+        String token = request.getHeader(Constants.TOKEN);
         if (!StringUtils.hasText(token)){
             filterChain.doFilter(request,response);
             return;
@@ -49,7 +49,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             Claims claims = JwtUtil.parseJWT(token);
             userId = claims.getSubject();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new MyRuntimeException(ResultInfo.TOKEN_ILLEGAL_ERROR);
         }
         String redisKey= Constants.LOGIN_USER_KEY+userId;
