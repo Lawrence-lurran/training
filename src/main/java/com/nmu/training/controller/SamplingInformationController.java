@@ -1,12 +1,15 @@
 package com.nmu.training.controller;
 
 
+import com.nmu.training.auth.MyUserDetails;
 import com.nmu.training.common.ResponseResult;
 import com.nmu.training.common.ResultInfo;
 import com.nmu.training.domain.entity.SamplingInformationDO;
 import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.service.ISamplingInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -26,6 +29,9 @@ public class SamplingInformationController {
 
     @PostMapping("/add")
     public ResponseResult<Boolean> add(@RequestBody SamplingInformationDO samplingInformationDO){
+        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails loginUser = (MyUserDetails) authenticationToken.getPrincipal();
+        samplingInformationDO.setUserId(loginUser.getUser().getId());
         boolean save = samplingInformationService.save(samplingInformationDO);
         if (!save){
             throw new MyRuntimeException(ResultInfo.SAVE_SAMPLING_INFORMATION_ERROR);

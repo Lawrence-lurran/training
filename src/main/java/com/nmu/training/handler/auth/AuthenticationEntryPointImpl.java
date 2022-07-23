@@ -27,14 +27,8 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         //ResponseResult result=new ResponseResult(HttpStatus.UNAUTHORIZED+"","用户认证失败请重新登陆",null);
-        Throwable cause = authException.getCause();
-        ResponseResult<Boolean> error;
-        if (cause instanceof MyRuntimeException){
-            MyRuntimeException myRuntimeException = (MyRuntimeException) cause;
-            error=ResponseResult.error(myRuntimeException.getCode(),myRuntimeException.getMessage());
-        }else {
-            error=ResponseResult.error(ResultInfo.Authentication_ERROR);
-        }
+
+        ResponseResult<Boolean> error=ResponseResult.error(ResultInfo.Authentication_ERROR);
         String s = JSON.toJSONString(error);
         WebUtils.renderString(response,s);
     }

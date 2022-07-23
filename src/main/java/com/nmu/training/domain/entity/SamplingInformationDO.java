@@ -26,11 +26,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class SamplingInformationDO  {
 
 
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
 
-
+    private Long userId;
 
     private String number;
 

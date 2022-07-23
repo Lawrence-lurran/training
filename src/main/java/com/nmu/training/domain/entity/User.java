@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 @TableName("sys_user")
 public class User {
     //主键@TableId
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     //用户名
