@@ -2,9 +2,11 @@ package com.nmu.training.controller;
 
 import com.google.code.kaptcha.Producer;
 
+import com.nmu.training.annotation.Log;
 import com.nmu.training.common.ResponseResult;
 import com.nmu.training.common.ResultInfo;
 import com.nmu.training.constant.Constants;
+import com.nmu.training.enums.OperatorType;
 import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.util.Base64;
 import com.nmu.training.util.IdUtils;
@@ -48,6 +50,7 @@ public class CaptchaController
      */
     @ApiOperation(value = "获取验证码")
     @GetMapping("/captchaImage")
+    @Log(title = "获取验证码",operatorType = OperatorType.MOBILE,isAuthentication = false)
     public ResponseResult<Map<String ,String >> getCode(){
 
         // 保存验证码信息

@@ -1,10 +1,13 @@
 package com.nmu.training.controller;
 
 
+import com.nmu.training.annotation.Log;
 import com.nmu.training.common.ResponseResult;
+import com.nmu.training.common.ResultInfo;
 import com.nmu.training.config.TrainingConfig;
 import com.nmu.training.config.ServerConfig;
 import com.nmu.training.constant.Constants;
+import com.nmu.training.enums.OperatorType;
 import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.util.StringUtils;
 import com.nmu.training.util.file.FileUploadUtils;
@@ -28,7 +31,7 @@ import java.util.Map;
 
 /**
  * 通用请求处理
- * 
+ *
  * @author ruoyi
  */
 @RestController
@@ -44,7 +47,7 @@ public class CommonController
 
     /**
      * 通用下载请求
-     * 
+     *
      * @param fileName 文件名称
      * @param delete 是否删除
      */
@@ -78,6 +81,7 @@ public class CommonController
      * 通用上传请求（单个）
      */
     @PostMapping("/upload")
+    @Log(title = "单个文件上传",operatorType = OperatorType.MOBILE)
     public ResponseResult<Map<String,String>> uploadFile(MultipartFile file) throws Exception
     {
         try
@@ -96,7 +100,7 @@ public class CommonController
         }
         catch (Exception e)
         {
-            throw new MyRuntimeException("上传文件失败");
+            throw new MyRuntimeException(ResultInfo.FILE_UPLOAD_ERROR);
         }
     }
 
@@ -104,6 +108,7 @@ public class CommonController
      * 通用上传请求（多个）
      */
     @PostMapping("/uploads")
+    @Log(title = "多个文件上传",operatorType = OperatorType.MOBILE)
     public ResponseResult<Map<String,String>> uploadFiles(List<MultipartFile> files) throws Exception
     {
         try
@@ -133,7 +138,7 @@ public class CommonController
         }
         catch (Exception e)
         {
-            throw new MyRuntimeException("上传文件失败");
+            throw new MyRuntimeException(ResultInfo.FILE_UPLOAD_ERROR);
         }
     }
 

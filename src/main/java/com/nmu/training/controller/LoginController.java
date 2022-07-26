@@ -2,16 +2,13 @@ package com.nmu.training.controller;
 
 
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+
+import com.nmu.training.annotation.Log;
 import com.nmu.training.auth.MyUserDetails;
 import com.nmu.training.common.ResponseResult;
-import com.nmu.training.domain.entity.RoleDO;
-import com.nmu.training.domain.entity.User;
-import com.nmu.training.domain.entity.UserRoleDO;
 import com.nmu.training.domain.model.LoginBody;
-import com.nmu.training.mapper.MenuMapper;
-import com.nmu.training.service.IRoleService;
-import com.nmu.training.service.IUserRoleService;
+import com.nmu.training.enums.BusinessType;
+import com.nmu.training.enums.OperatorType;
 import com.nmu.training.service.LoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,13 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import static net.sf.jsqlparser.util.validation.metadata.NamedObject.user;
+import java.util.Map;
 
 /**
  * Description:
@@ -43,27 +35,32 @@ public class LoginController {
 
 
     @ApiOperation(value = "登录")
+    @Log(title = "登录",operatorType = OperatorType.MOBILE,isAuthentication = false)
     @PostMapping("/user/login")
     public ResponseResult<Map<String ,String >> login(@RequestBody LoginBody user){
         return loginService.login(user);
     }
     @ApiOperation(value = "登出")
     @GetMapping ("/user/logout")
+    @Log(title = "登出",operatorType = OperatorType.MOBILE)
     public ResponseResult<Boolean> logout(){
         return loginService.logout();
     }
 
     @PostMapping("/user/register")
     @ApiOperation(value = "注册")
+    @Log(title = "注册",businessType = BusinessType.INSERT,operatorType = OperatorType.MOBILE,isAuthentication = false)
     public ResponseResult<Map<String ,String >> register(@RequestBody LoginBody user){
         return loginService.register(user);
     }
     @GetMapping("/user/getInfo")
+    @Log(title = "获取用户信息",businessType = BusinessType.QUERY,operatorType = OperatorType.MOBILE)
+    @ApiOperation(value = "获取用户信息")
     public ResponseResult<Map<String ,Object >> getInfo() {
         UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails loginUser = (MyUserDetails) authenticationToken.getPrincipal();
         Map<String, Object> data = new HashMap<>();
-        data.put("user",loginUser.getUser());
+        data.put("user",loginUser.getUserDO());
         data.put("roles",loginUser.getRoles());
         data.put("permissions",loginUser.getPermissions());
         return ResponseResult.success(data);

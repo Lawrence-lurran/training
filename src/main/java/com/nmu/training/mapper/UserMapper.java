@@ -2,7 +2,7 @@ package com.nmu.training.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.nmu.training.domain.entity.User;
+import com.nmu.training.domain.entity.UserDO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2022-04-08 14:54:27
  */
 @Mapper
-public interface UserMapper extends BaseMapper<User> {
+public interface UserMapper extends BaseMapper<UserDO> {
 
 }
 

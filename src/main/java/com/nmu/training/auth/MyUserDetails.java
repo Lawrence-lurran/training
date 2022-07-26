@@ -2,7 +2,7 @@ package com.nmu.training.auth;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import com.nmu.training.domain.entity.User;
+import com.nmu.training.domain.entity.UserDO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MyUserDetails implements UserDetails {
 
-    private User user;
+    private UserDO userDO;
 
     private List<String> permissions;
 
@@ -52,12 +52,12 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return userDO.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return userDO.getUsername();
     }
 
     @Override

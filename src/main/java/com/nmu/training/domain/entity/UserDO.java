@@ -2,8 +2,6 @@ package com.nmu.training.domain.entity;
 
 import java.util.Date;
 
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +23,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("sys_user")
-public class User {
+public class UserDO {
     //主键@TableId
     @TableId(type = IdType.AUTO)
     private Long id;

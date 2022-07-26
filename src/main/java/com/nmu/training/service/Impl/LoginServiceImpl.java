@@ -6,7 +6,7 @@ import com.nmu.training.auth.MyUserDetails;
 import com.nmu.training.common.ResponseResult;
 import com.nmu.training.common.ResultInfo;
 import com.nmu.training.constant.Constants;
-import com.nmu.training.domain.entity.User;
+import com.nmu.training.domain.entity.UserDO;
 import com.nmu.training.domain.entity.UserRoleDO;
 import com.nmu.training.domain.model.LoginBody;
 import com.nmu.training.handler.exception.MyRuntimeException;
@@ -61,7 +61,7 @@ public class LoginServiceImpl implements LoginService {
             throw new MyRuntimeException(ResultInfo.LOGIN_ERROR);
         }
         MyUserDetails loginUser = (MyUserDetails) authenticate.getPrincipal();
-        String userId = loginUser.getUser().getId().toString();
+        String userId = loginUser.getUserDO().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         redisCache.setCacheObject(Constants.LOGIN_USER_KEY+userId,loginUser,Constants.TOKEN_EXPIRATION, TimeUnit.MINUTES);
         Map<String,String> map=new HashMap<>();
@@ -73,7 +73,7 @@ public class LoginServiceImpl implements LoginService {
     public ResponseResult<Boolean> logout() {
         UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails loginUser = (MyUserDetails) authenticationToken.getPrincipal();
-        String userId = loginUser.getUser().getId().toString();
+        String userId = loginUser.getUserDO().getId().toString();
         String redisKey=Constants.LOGIN_USER_KEY+userId;
         redisCache.deleteObject(redisKey);
         return ResponseResult.success("注销成功");
@@ -82,27 +82,27 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ResponseResult<Map<String, String>> register(LoginBody user) {
         validateCaptcha(user.getCode(), user.getUuid());
-        User hasUser = userService.getOne(new LambdaQueryWrapper<User>().eq(User::getUsername, user.getUsername()));
-        if (hasUser!=null){
+        UserDO hasUserDO = userService.getOne(new LambdaQueryWrapper<UserDO>().eq(UserDO::getUsername, user.getUsername()));
+        if (hasUserDO !=null){
             throw new MyRuntimeException(ResultInfo.REPEAT_NAME_ERROR);
         }
-        User user1 = new User();
-        user1.setUsername(user.getUsername());
-        user1.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        boolean save = userService.save(user1);
+        UserDO userDO1 = new UserDO();
+        userDO1.setUsername(user.getUsername());
+        userDO1.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        boolean save = userService.save(userDO1);
         if (!save){
             throw new MyRuntimeException(ResultInfo.REGISTER_ERROR);
         }
         MyUserDetails myUserDetails = new MyUserDetails();
-        User loginUser = userService.getOne(new LambdaQueryWrapper<User>().eq(User::getUsername, user.getUsername()));
-        String userId = loginUser.getId().toString();
+        UserDO loginUserDO = userService.getOne(new LambdaQueryWrapper<UserDO>().eq(UserDO::getUsername, user.getUsername()));
+        String userId = loginUserDO.getId().toString();
         UserRoleDO userRoleDO = new UserRoleDO();
-        userRoleDO.setUserId(loginUser.getId());
+        userRoleDO.setUserId(loginUserDO.getId());
         userRoleDO.setRoleId(2L);
         userRoleService.save(userRoleDO);
         String jwt = JwtUtil.createJWT(userId);
-        myUserDetails.setUser(loginUser);
-        List<String> list = menuMapper.selectPermsByUserId(loginUser.getId());
+        myUserDetails.setUserDO(loginUserDO);
+        List<String> list = menuMapper.selectPermsByUserId(loginUserDO.getId());
         myUserDetails.setPermissions(list);
         redisCache.setCacheObject(Constants.LOGIN_USER_KEY+userId,myUserDetails,Constants.TOKEN_EXPIRATION, TimeUnit.MINUTES);
         Map<String,String> map=new HashMap<>();

@@ -2,25 +2,21 @@ package com.nmu.training.service.Impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-
 import com.nmu.training.auth.MyUserDetails;
+import com.nmu.training.common.ResultInfo;
 import com.nmu.training.domain.entity.RoleDO;
-import com.nmu.training.domain.entity.User;
+import com.nmu.training.domain.entity.UserDO;
 import com.nmu.training.domain.entity.UserRoleDO;
 import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.mapper.MenuMapper;
 import com.nmu.training.mapper.RoleMapper;
 import com.nmu.training.mapper.UserMapper;
 import com.nmu.training.mapper.UserRoleMapper;
-import com.nmu.training.service.IRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
@@ -49,15 +45,14 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("输入的用户名为:{}",username);
         MyUserDetails myUserDetails = new MyUserDetails();
-        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername,username));
-        if (Objects.isNull(user)) {
-            throw new MyRuntimeException("用户名不存在!");
+        UserDO userDO = userMapper.selectOne(new LambdaQueryWrapper<UserDO>().eq(UserDO::getUsername,username));
+        if (Objects.isNull(userDO)) {
+            throw new MyRuntimeException(ResultInfo.NAME_NOT_EXIT_ERROR);
         }
-        myUserDetails.setUser(user);
-        List<String> list = menuMapper.selectPermsByUserId(user.getId());
-        List<UserRoleDO> userRoleDOS = userRoleMapper.selectList(new LambdaQueryWrapper<UserRoleDO>().eq(UserRoleDO::getUserId, user.getId()));
+        myUserDetails.setUserDO(userDO);
+        List<String> list = menuMapper.selectPermsByUserId(userDO.getId());
+        List<UserRoleDO> userRoleDOS = userRoleMapper.selectList(new LambdaQueryWrapper<UserRoleDO>().eq(UserRoleDO::getUserId, userDO.getId()));
         List<String> roles = userRoleDOS.stream().map(userRoleDO -> {
             RoleDO roleDO = roleMapper.selectById(userRoleDO.getRoleId());
             return roleDO.getRoleKey();

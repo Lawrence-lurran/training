@@ -1,7 +1,7 @@
 package com.nmu.training.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.nmu.training.domain.entity.User;
+import com.nmu.training.domain.entity.UserDO;
 
 
 /**
@@ -10,7 +10,7 @@ import com.nmu.training.domain.entity.User;
  * @author makejava
  * @since 2022-04-08 14:54:29
  */
-public interface UserService extends IService<User> {
+public interface UserService extends IService<UserDO> {
 
 }
 

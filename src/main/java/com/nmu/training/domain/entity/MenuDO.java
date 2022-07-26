@@ -23,7 +23,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Menu implements Serializable {
+public class MenuDO implements Serializable {
     private static final long serialVersionUID = -54979041104113736L;
 
     @TableId
