@@ -50,7 +50,7 @@ public class CaptchaController
      */
     @ApiOperation(value = "获取验证码")
     @GetMapping("/captchaImage")
-    @Log(title = "获取验证码",operatorType = OperatorType.MOBILE,isAuthentication = false)
+//    @Log(title = "获取验证码",operatorType = OperatorType.MOBILE,isAuthentication = false)
     public ResponseResult<Map<String ,String >> getCode(){
 
         // 保存验证码信息
