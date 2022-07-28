@@ -8,6 +8,8 @@ package com.nmu.training.common;
  */
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.nmu.training.constant.Constants;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseResult<T> {
     /**
@@ -67,7 +69,7 @@ public class ResponseResult<T> {
         this.data = data;
     }
     public static <T> ResponseResult<T> success(String msg, T data) {
-        return new ResponseResult<T>("200", msg, data);
+        return new ResponseResult<T>(Constants.SUCCESS, msg, data);
     }
     public static <T> ResponseResult<Boolean> success(String msg) {
         return ResponseResult.success(msg, true);
@@ -83,7 +85,7 @@ public class ResponseResult<T> {
         return new ResponseResult<T>(code, msg, data);
     }
     public static <T> ResponseResult<T> error(String msg, T data) {
-        return ResponseResult.error("500", msg, data);
+        return ResponseResult.error(Constants.FAIL, msg, data);
     }
     public static <T> ResponseResult<Boolean> error(String msg) {
         return ResponseResult.error(msg, false);
