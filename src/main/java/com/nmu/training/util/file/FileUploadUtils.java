@@ -7,6 +7,7 @@ import com.nmu.training.handler.exception.MyRuntimeException;
 import com.nmu.training.util.DateUtils;
 import com.nmu.training.util.Seq;
 import com.nmu.training.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,7 @@ import java.util.Objects;
  *
  * @author ruoyi
  */
+@Slf4j
 public class FileUploadUtils
 {
     /**
@@ -82,6 +84,7 @@ public class FileUploadUtils
         }
         catch (Exception e)
         {
+            log.error("文件上传失败");
             throw new IOException(e.getMessage(), e);
         }
     }
@@ -100,6 +103,7 @@ public class FileUploadUtils
         int fileNamelength = Objects.requireNonNull(file.getOriginalFilename()).length();
         if (fileNamelength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH)
         {
+            log.error("文件名超出限制：{}",file.getOriginalFilename());
             throw new MyRuntimeException("文件名超出限制");
         }
 
@@ -155,6 +159,7 @@ public class FileUploadUtils
         long size = file.getSize();
         if (size > DEFAULT_MAX_SIZE)
         {
+            log.error("文件大小超过限制,文件大小为：{}",size);
             throw new MyRuntimeException("文件大小超过限制");
         }
 
@@ -162,6 +167,8 @@ public class FileUploadUtils
         String extension = getExtension(file);
         if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension))
         {
+            log.error("文件类型不符合,文件类型为：{}",extension);
+
             throw new MyRuntimeException("文件类型不符合");
         }
     }

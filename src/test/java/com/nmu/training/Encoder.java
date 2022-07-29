@@ -1,5 +1,6 @@
 package com.nmu.training;
 
+import com.alibaba.fastjson.JSON;
 import com.nmu.training.domain.entity.UserDO;
 import com.nmu.training.mapper.UserMapper;
 import com.nmu.training.util.ReadExcelUtil;
@@ -52,11 +53,21 @@ public class Encoder {
         }
 
 
-//以上读取Excel完成，list就是数据,下面进行插入数据库的操作
-//定义Excel第一行的属性
 
 
 
+
+
+    }
+
+    public static void main(String[] args) {
+        UserDO userDO = new UserDO();
+        userDO.setUsername("测试").setPassword("c1231230").setEmail("email");
+        String s = JSON.toJSONString(userDO);
+        System.out.println(s);
+        String user="{\"Email\":\"email\",\"Password\":\"c1231230\",\"Username\":\"测试\"}";
+        UserDO userDO1 = JSON.parseObject(user, UserDO.class);
+        System.out.println(userDO1);
 
     }
 }

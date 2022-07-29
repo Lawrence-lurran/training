@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.experimental.Accessors;
+
 /**
  * 用户表(User)表实体类
  *
@@ -21,6 +23,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("sys_user")
+@Accessors(chain = true)
 public class UserDO {
     @TableId(type = IdType.AUTO)
     private Long id;

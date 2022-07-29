@@ -48,6 +48,7 @@ public class MyUserDetailsService implements UserDetailsService {
         MyUserDetails myUserDetails = new MyUserDetails();
         UserDO userDO = userMapper.selectOne(new LambdaQueryWrapper<UserDO>().eq(UserDO::getUsername,username));
         if (Objects.isNull(userDO)) {
+            log.error("用户名不存在:{}",username);
             throw new MyRuntimeException(ResultInfo.NAME_NOT_EXIT_ERROR);
         }
         myUserDetails.setUserDO(userDO);

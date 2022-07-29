@@ -9,6 +9,7 @@ import com.nmu.training.util.JwtUtil;
 import com.nmu.training.util.RedisCache;
 import io.jsonwebtoken.Claims;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
  * @data Created on 2022/4/8 4:52 下午
  */
 @Component
+@Slf4j
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -49,11 +51,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             Claims claims = JwtUtil.parseJWT(token);
             userId = claims.getSubject();
         } catch (Exception e) {
+            log.error("用户token异常:{}",token);
             throw new MyRuntimeException(ResultInfo.TOKEN_ILLEGAL_ERROR);
         }
         String redisKey= Constants.LOGIN_USER_KEY+userId;
         MyUserDetails loginUser =  redisCache.getCacheObject(redisKey);
         if (Objects.isNull(loginUser)){
+            log.error("用户token过期:{}",token);
             throw new MyRuntimeException(ResultInfo.TOKEN_EXP_ERROR);
         }
         redisCache.expire(redisKey,Constants.TOKEN_EXPIRATION, TimeUnit.MINUTES);
